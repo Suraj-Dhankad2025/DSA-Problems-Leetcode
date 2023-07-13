@@ -1,24 +1,28 @@
 class Solution {
 public:
-    
-    bool wordBreak(string s, vector<string>& w) {
-        int n = s.size();
-        vector<bool>dp(n+1, 0);
-        dp[n] = 1;
-        for(int i = n-1; i>=0; i--){
-            for(auto j:w){
-                if((i + j.size()) <= n){
-                    string t = "";
-                    for(int k=i; k<i+j.size(); k++){
-                        t+=s[k];
-                    }
-                    if(t == j){
-                        dp[i] = dp[i + j.size()];
-                    }
+     bool badhiya(string s,set<string>&st,int ind,vector<int>&dp){
+        if(ind>=s.length()){
+            return true;
+        }
+        if(dp[ind]!=-1){
+            return dp[ind];
+        }
+        for(int i=ind;i<s.length();i++){
+            if(st.find(s.substr(ind,i-ind+1))!=st.end()){ 
+                if( badhiya(s,st,i+1,dp)){
+                    return dp[ind]=1;
                 }
-                if(dp[i]==true) break;
             }
         }
-        return dp[0];
+        return dp[ind]= 0;
+    }
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        set<string>st;
+        for(int i=0;i<wordDict.size();i++){
+            st.insert(wordDict[i]);
+        }
+        vector<int>dp(s.length(),-1);
+        return badhiya(s,st,0,dp);
     }
 };
