@@ -60,29 +60,23 @@ public:
         }
         return ans;
     }
-    int maximalRectangle(vector<vector<char>>& matrix) {
-        int n = matrix.size();
-    int m = matrix[0].size();
-
-    vector<int> arr(m, 0);
-    int maxarea = 0;
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            if (matrix[i][j] == '1')
-            {
-                arr[j] += 1;
+    int maximalRectangle(vector<vector<char>>& mat) {
+        int n = mat.size();
+        int m = mat[0].size();
+        vector<int>a(m,0);
+        int ans = 0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(mat[i][j] == '1'){
+                    a[j] += 1;
+                }
+                else{
+                    a[j] = 0;
+                }
             }
-            else
-            {
-                arr[j] = 0;
-            }
+            int curAns = find(a);
+            ans = max(ans, curAns);
         }
-
-        int area = find(arr);
-        maxarea = max(area, maxarea);
-    }
-    return maxarea;
+        return ans;
     }
 };
