@@ -4,8 +4,8 @@ bool find(int i, int j, string &s, string &t, vector<vector<int>>&dp){
     if(i==0 && j==0)return true;
     if(i==0 && j>0)return false;
     if(j==0 && i>0){
-        for(int ii = i-1; ii>=0; ii--){
-            if(s[ii]!='*')return false;
+        for(int ii = i; ii>0; ii--){
+            if(s[ii-1]!='*')return false;
         }
         return true;
     }
