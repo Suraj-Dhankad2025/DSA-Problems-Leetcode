@@ -13,8 +13,6 @@ public:
         for(int i=0; i<n; i++){
             if(secret[i]==guess[i]){
                 x++;
-                // continue;
-                // m[guess[i]]--;
             }
             else if(m.find(guess[i])!=m.end() && m[guess[i]]>0){
                 y++;
