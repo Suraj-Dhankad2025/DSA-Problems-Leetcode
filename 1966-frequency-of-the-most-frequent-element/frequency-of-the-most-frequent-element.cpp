@@ -8,15 +8,13 @@ public:
         int j=0;
         while(j<nums.size()){
             prefix+=nums[j];
-            if(k>=(long long)nums[j]*(j-i+1)-prefix){
+            if(prefix+k>=(long long)nums[j]*(j-i+1)){
                 ans = max(ans, j-i+1);
             }
-            // else{
-                while(k<(long long)nums[j]*(j-i+1)-prefix){
+            while(prefix+k<(long long)nums[j]*(j-i+1)){
                 prefix = prefix - nums[i];
                 i++;
-                }
-            // } 
+            }
             j++;  
         }
         return ans;
