@@ -11,12 +11,12 @@ public:
             if(k>=(long long)nums[j]*(j-i+1)-prefix){
                 ans = max(ans, j-i+1);
             }
-            else{
+            // else{
                 while(k<(long long)nums[j]*(j-i+1)-prefix){
                 prefix = prefix - nums[i];
                 i++;
                 }
-            } 
+            // } 
             j++;  
         }
         return ans;
