@@ -30,8 +30,7 @@ public:
         }
         return true;
     }
-    void find(int r, int c, int n, vector<string>&board, int tQP){
-        // if(r==0&&c==0)return;
+    void find(int r, int c, int n, vector<string>&board){
         if(r==n){
             ans.push_back(board);
             return;
@@ -40,7 +39,7 @@ public:
 
             if(isSafe(r, c, n, board)){
                 board[r][c] = 'Q';
-                find(r+1, 0, n, board,tQP+1);
+                find(r+1, 0, n, board);
                 board[r][c] ='.';
             }
         }
@@ -51,7 +50,7 @@ public:
         for(int i=0;i<n;i++){
             a[i]=s;
         }
-        find(0,0,n, a,0);
+        find(0,0,n, a);
         return ans;
     }
 };
