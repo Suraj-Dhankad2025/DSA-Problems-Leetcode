@@ -1,119 +1,57 @@
 class Solution {
 public:
-bool isSafe(int row, int col, vector<string>board, int n)
-    //     int r = row;
-    //     int c = col;
-    //     while(r>=0 && c>=0){
-    //         if(board[r][c]=='Q'){
-    //             return false;
-    //         }
-    //         r--;
-    //         c--;
-    //     }
-    //     r = row;
-    //     c = col;
-    //     while(c>=0){
-    //         if(board[r][c]=='Q'){
-    //             return false;
-    //         }
-    //         c--;
-    //     }
-    //     r = row;
-    //     c = col;
-    //     while(c>=0 && r<n){
-    //         if(board[r][c]='Q'){
-    //             return false;
-    //         }
-    //         c--;
-    //         r++;
-    //     }
-    //     return true;
-    // }
-    // void solve(int col, int n, vector<vector<string>>&ans, vector<string>&board){
-    //     if(col==n){
-    //         ans.push_back(board);
-    //         return;
-    //     }
-    //     for(int row=0; row<n; row++){
-    //         if(isSafe(row,col,board,n)){
-    //             board[row][col] = 'Q';
-    //             solve(col+1,n,ans,board);
-    //             board[row][col] = '.';
-    //         }
-    //     }
-    // }
-    // vector<vector<string>> solveNQueens(int n) {
-    //     vector<vector<string>>ans;
-    //     vector<string>board;
-    //     string s="";
-    //     for(int i=0; i<n; i++){
-    //         s+=".";
-    //     }
-    //     for(int i=0; i<n; i++){
-    //         board[i] = s;
-    //     }
-    //     solve(0, n, ans, board);
-    //     return ans;
-    // }
-{
-        int r = row;
-        int c = col;
-        // checking upward diagonal
+    vector<vector<string>>ans;
+    bool isSafe(int row, int col, int n,vector<string>&board){
+        int r=row;
+        int c=col;
+        while(r>=0){
+            if(board[r][c]=='Q'){
+                return false;
+            }
+            r--;
+        }
+        r=row;
+        c=col;
+        while(r>=0 && c<n){
+            if(board[r][c]=='Q'){
+                return false;
+            }
+            r--;
+            c++;
+        }
+        r=row;
+        c=col;
         while(r>=0 && c>=0){
             if(board[r][c]=='Q'){
                 return false;
             }
-            r--,c--;
-        }
-
-
-        // checking row
-        r=row;
-        c= col;
-        while(c>=0){
-            if(board[r][c]=='Q'){
-                return false;
-            }
+            r--;
             c--;
         }
-        
-        // checking lower diagonal
-        r=row;
-        c=col;
-        while(r<n && c>=0){
-            if(board[r][c]=='Q'){
-                return false;
-            }
-            r++;
-            c--;
-        }
-        
         return true;
-
     }
-    void solve(int col,vector<string>&board,vector<vector<string>> &ans,int n){
-        if(col==n){
+    void find(int r, int c, int n, vector<string>&board, int tQP){
+        // if(r==0&&c==0)return;
+        if(r==n){
             ans.push_back(board);
             return;
         }
+        for(int c=0;c<n;c++){
 
-        for(int row=0;row<n;row++){
-            if(isSafe(row,col,board,n)){
-                board[row][col]='Q';
-                solve(col+1,board,ans,n);
-                board[row][col]='.';
+            if(isSafe(r, c, n, board)){
+                board[r][c] = 'Q';
+                find(r+1, 0, n, board,tQP+1);
+                board[r][c] ='.';
             }
         }
     }
     vector<vector<string>> solveNQueens(int n) {
-        vector<vector<string>> ans;
-        vector<string> board(n);
+        vector<string>a(n,"");
         string s(n,'.');
         for(int i=0;i<n;i++){
-            board[i]=s;
+            a[i]=s;
         }
-
-        solve(0,board,ans,n);
+        find(0,0,n, a,0);
         return ans;
     }
 };
