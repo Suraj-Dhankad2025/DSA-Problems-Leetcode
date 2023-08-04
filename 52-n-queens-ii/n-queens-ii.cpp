@@ -1,6 +1,6 @@
 class Solution {
 public:
-    vector<vector<string>>ans;
+    int count=0;
     bool isSafe(int row, int col, int n,vector<string>&board){
         int r=row;
         int c=col;
@@ -32,7 +32,7 @@ public:
     }
     void find(int r, int c, int n, vector<string>&board){
         if(r==n){
-            ans.push_back(board);
+            count++;
             return;
         }
         for(int c=0;c<n;c++){
@@ -50,6 +50,6 @@ public:
             a[i]=s;
         }
         find(0,0,n, a);
-        return ans.size();
+        return count;
     }
 };
