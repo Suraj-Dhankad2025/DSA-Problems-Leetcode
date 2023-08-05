@@ -1,16 +1,14 @@
 class Solution {
 public:
     bool find(int prev, int jump, vector<int>&stones, unordered_map<int,int>&m, vector<vector<int>>&dp){
-
-        int position = stones[prev] + jump;
-        if(position==stones.back()){
+        if(stones[prev] + jump==stones.back()){
             return true;
         }
-        if(m.find(position)==m.end()){
+        if(m.find(stones[prev] + jump)==m.end()){
             return false;
         }
         if(dp[prev][jump]!=-1)return dp[prev][jump];
-        int ind = m[position];
+        int ind = m[stones[prev] + jump];
         bool ans;
         ans = find(ind, jump+1, stones,m,dp);
         ans = ans||find(ind, jump, stones, m,dp);
