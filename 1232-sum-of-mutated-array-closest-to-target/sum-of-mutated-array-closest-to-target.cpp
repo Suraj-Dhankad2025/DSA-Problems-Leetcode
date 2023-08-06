@@ -17,7 +17,7 @@ public:
        int s=0;
     //    int sum = accumulate(arr.begin(), arr.end(), 0);
        int e = *max_element(arr.begin(), arr.end());
-       int ans=0;
+       int ans=INT_MAX;
        int mini=INT_MAX;
        while(s<=e){
            int mid = s + (e-s)/2;
