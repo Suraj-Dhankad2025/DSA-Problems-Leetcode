@@ -19,21 +19,25 @@ public:
 class Solution {
 public:
     Node* connect(Node* root) {
-        if(!root)
+    if(!root){
         return nullptr;
+    }
     Node* currLevelFirstNode = root;
     while(currLevelFirstNode) {
         Node* currentNode = currLevelFirstNode;
         currLevelFirstNode = nullptr;
         Node* lastConnectedNode = nullptr;
         while(currentNode) {
-            for(auto& child : {currentNode->left, currentNode->right}) {
-                if(!child)
+            for(auto& child : {currentNode->left, currentNode->right}){
+                if(!child){
                     continue;
-                if(!currLevelFirstNode)
+                }   
+                if(!currLevelFirstNode){
                     currLevelFirstNode = child;
-                if(lastConnectedNode)
+                }   
+                if(lastConnectedNode){
                     lastConnectedNode->next = child;
+                }    
                 lastConnectedNode = child;
             }
             currentNode = currentNode->next;
