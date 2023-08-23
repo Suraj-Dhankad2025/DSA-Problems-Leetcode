@@ -1,33 +1,41 @@
 class Solution {
 public:
     int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
-        unordered_map<int,vector<int>>mp;
-         for(int i=0;i<routes.size();i++){
-            for(int j=0;j<routes[i].size();j++){
-                mp[routes[i][j]].push_back(i);
+        map<int,set<int>> adj;
+        int buscount=routes.size();
+        for(int bus=0;bus<buscount;bus++){
+            for(auto stations:routes[bus]){
+                adj[stations].insert(bus);
             }
         }
-        vector<int>vis(routes.size(),0);
-        queue<pair<int,int>>q;
-        q.push({source,0});
-        int mini=INT_MAX;
-        while(!q.empty()){
-            int curr=q.front().first;
-            int buses=q.front().second;
-            q.pop();
-            if(curr==target){
-                return buses;
-            }
-            vector<int>nikalo=mp[curr];
-            for(int i=0;i<nikalo.size();i++){
-                if(vis[nikalo[i]])continue;
-                vis[nikalo[i]]=true;
-                vector<int>atthisidx=routes[nikalo[i]];
-                for(int j=0;j<atthisidx.size();j++){
-                    q.push({atthisidx[j],buses+1});
+        // BusTaken : Buses which you have already used , StationsVisited stations you have visited 
+        set<int> bustaken,stationsvisited; 
+        queue<pair<int,int>> track;
+        track.push({source,0});
+        stationsvisited.insert(source);
+
+        while(!track.empty()){
+            int station=track.front().first;
+            int busestaken=track.front().second;
+            track.pop();
+            
+            if(station==target) return busestaken;//when we reach the end we return the number of buses
+
+            for(auto busesavail : adj[station]){ // buses available at a station
+                if(!bustaken.count(busesavail)){ // Exclude the buses which have not been taken
+                    for(auto reach : routes[busesavail]){ // stations which can be reached from that station
+                        if(!stationsvisited.count(reach)){ // Stations which you have already visited exclude them
+                            track.push({reach,busestaken+1});
+                            stationsvisited.insert(reach);
+                        }
+
+                    }
+                    bustaken.insert(busesavail); // buses visited 
                 }
             }
         }
-        return -1;
+
+        return -1; // we didn't reach the station
+    
     }
 };
