@@ -1,30 +1,31 @@
 class Solution {
 public:
-    vector<int> kthSmallestMerge(vector<int> a, vector<int> b, int k = 200) {
-        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<>> pq;
-        int n = a.size(), m = b.size();
-        for(int i = 0; i < min(n, k); ++i) {
-            pq.push({a[i] + b[0], i, 0});
+    vector<int> find(vector<int> nums1, vector<int> nums2, int k) {
+        vector<int>ans;
+        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<tuple<int, int, int>>>pq;
+        
+        for(int i=0; i<nums1.size(); i++){
+            pq.push({nums1[i]+nums2[0], i, 0});
         }
-        vector<int> res;
-        while(k > 0 && !pq.empty()) {
-            auto [sum, i, j] = pq.top();
-            res.push_back(sum);
+        while(!pq.empty() && k>0){
+            auto [sum, i,j] = pq.top();
             pq.pop();
-            if(j + 1 < m) pq.push({a[i] + b[j + 1], i, j + 1});
+            ans.push_back(sum);
+            if(j+1<nums2.size()){
+                pq.push({nums1[i]+nums2[j+1], i, j+1});
+            }
             k--;
         }
-
-        return res;
+        return ans;
     }
     int kthSmallest(vector<vector<int>>& mat, int k) {
         if(mat.size()==1){
             return mat[0][k-1];
         }
-        vector<int>res = mat[0];
-        for(int row = 1; row < mat.size(); ++row) {
-            res = kthSmallestMerge(mat[row], res, k);
+        vector<int>ans = mat[0];
+        for(int i=1; i<mat.size(); i++){
+            ans = find(mat[i],ans,k);
         }
-        return res[k - 1];
+        return ans[k-1];
     }
 };
