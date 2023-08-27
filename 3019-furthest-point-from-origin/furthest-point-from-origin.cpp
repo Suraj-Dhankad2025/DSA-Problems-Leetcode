@@ -1,23 +1,20 @@
 class Solution {
 public:
     int furthestDistanceFromOrigin(string moves) {
-        int movesr=0;
-        int under=0;
-        int movesl=0;
+        int r=0;
+        int x=0;
+        int l=0;
         for(int i=0;i<moves.size();i++){
             if(moves[i]=='L'){
-                movesl++;
+                l++;
             }
             else if(moves[i]=='R'){
-                movesr++;
+                r++;
             }
             else{
-                under++;
+                x++;
             }
         }
-        if(movesl>=movesr){
-            return movesl-movesr+under;
-        }
-        return movesr-movesl+under;
+        return abs(r-l)+x;
     }
 };
