@@ -1,38 +1,50 @@
 class Solution {
 public:
     int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
-        vector<vector<int>>dis(n ,vector<int>(n, INT_MAX));
-        for(auto i:edges){
-            dis[i[0]][i[1]] = i[2];
-            dis[i[1]][i[0]] = i[2];
+        vector<pair<int,int>> adj[n];
+        for(auto it:edges)
+        {
+            adj[it[0]].push_back({it[1],it[2]});
+            adj[it[1]].push_back({it[0],it[2]});
         }
-        for(int i=0; i<n; i++){
-            dis[i][i] = 0;
-        }
-        for(int k=0; k<n; k++){
-            for(int i=0; i<n; i++){
-                for(int j=0; j<n; j++){
-                    if(dis[i][k]==INT_MAX || dis[k][j]==INT_MAX){
-                        continue;
+        
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        
+        int cityno,mincitycount=1e9;
+        
+        for(int i=0;i<n;i++)
+        {
+            vector<int> dist(n,1e9);
+            pq.push({0,i});
+            dist[i]=0;
+            while(!pq.empty())
+            {
+                int distance=pq.top().first;
+                int node=pq.top().second;
+                pq.pop();
+                for(auto it:adj[node])
+                {
+                    int adjNode=it.first;
+                    int adjWeight=it.second;
+                    if(distance + adjWeight < dist[adjNode])
+                    {
+                        dist[adjNode] = distance + adjWeight;
+                        pq.push({dist[adjNode],adjNode});
                     }
-                    dis[i][j] = min(dis[i][j], dis[i][k] + dis[k][j]);
                 }
             }
-        }
-        int city=-1;
-        int count=n;
-        for(int i=0; i<n; i++){
-            int c=0;
-            for(int j=0; j<n; j++){
-                if(dis[i][j]<=distanceThreshold){
-                    c++;
-                }
+            int count=0;
+            for(int j=0;j<n;j++)
+            {
+                if(dist[j]<=distanceThreshold)
+                    count++;
             }
-            if(c<=count){
-                city = i;
-                count = c;
+            if(count<=mincitycount)
+            {
+                mincitycount=count;
+                cityno = i;
             }
         }
-        return city;
+        return cityno;
     }
 };
