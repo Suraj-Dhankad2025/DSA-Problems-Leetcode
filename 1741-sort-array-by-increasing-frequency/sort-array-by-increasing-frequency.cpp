@@ -1,32 +1,21 @@
 class Solution {
 public:
     vector<int> frequencySort(vector<int>& nums) {
-        map<int, int>m;
-        for(int i=0; i<nums.size(); i++){
-            m[nums[i]]++;
-        }
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>pq;
-        vector<int>ans;
-        map<int,int>mp;
-        for(int i=0;i<nums.size();i++){
-            mp[nums[i]]++;
-        }
-        vector<pair<int,int>>p;
-        for(auto i:mp){
-            p.push_back({i.second,i.first});
-        }
-        sort(p.begin(),p.end(),[](const pair<int,int>&a,const pair<int,int>&b){
-            if(a.first==b.first)
-            return a.second>b.second;
-            return a.first<b.first;
-        });
-        for(int i=0;i<p.size();i++){
-            int n=p[i].first;
-            int value=p[i].second;
-            for(int j=0;j<n;j++){
-                ans.push_back(value);
+        unordered_map<int,int> m;
+        for(auto it : nums) m[it]++;
+
+        priority_queue<pair<int,int>> h; 
+        for(auto &i:m) h.push({-i.second,i.first});
+        
+        vector<int> v;
+        while(!h.empty())
+        {
+            for(int i = 0; i<-(h.top().first); i++)
+            {
+                v.push_back(h.top().second);
             }
+            h.pop();
         }
-        return ans;
+        return v;
     }
 };
