@@ -31,7 +31,6 @@ public:
                 res = i;
             }
         }
-        // if(res==a.size()-1 && a[a.size()-1]=='Y')return a.size();
         return res;
     }
 };
