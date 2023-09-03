@@ -2,7 +2,6 @@ class Solution {
 public:
     vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
     vector<vector<int>>ans;
-    // sort(intervals.begin(), intervals.end()); 
     for(auto it: intervals){
         if(it[1] < newInterval[0]) 
             ans.push_back(it);
