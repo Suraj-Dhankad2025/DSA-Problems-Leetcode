@@ -1,3 +1,4 @@
+
 class Solution {
 public:
     long long countSmallerProducts(vector<int>& nums1, vector<int>& nums2, long long product){
@@ -13,7 +14,8 @@ public:
                     }else h=mid-1;
                 }
                 count+=temp+1;
-            }else{
+            }
+            else{
                 int l=0,h=nums2.size()-1,temp=nums2.size();
                 while(l<=h){
                     int mid=l+(h-l)/2;
