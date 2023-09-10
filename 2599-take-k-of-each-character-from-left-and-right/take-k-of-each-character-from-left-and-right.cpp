@@ -1,24 +1,27 @@
 class Solution {
 public:
-    bool check(vector<int> &v, int &k){
-        for(auto &i: v){
+    bool check(vector<int>a, int k){
+        for(auto i:a){
             if(i<k)return true;
         }
         return false;
     }
     int takeCharacters(string s, int k){
-        vector<int> v(3,0);
-        for(auto &i: s){
-            v[i-'a']++;
+        int n=s.size();
+        vector<int>a(3,0);
+        for(auto i:s){
+            a[i-'a']++;
         }
-        if(check(v,k)){
+        if(check(a,k)){
             return -1;
         }
-        int i = 0, j =0,n=s.length(),ans=0;
+        int i=0;
+        int j=0;
+        int ans=0;
         while(i<n){
-            v[s[i]-'a']--;
-            while(check(v,k)){
-                v[s[j]-'a']++;
+            a[s[i]-'a']--;
+            while(check(a,k)){
+                a[s[j]-'a']++;
                 j++;
             }
             ans = max(i-j+1,ans);
