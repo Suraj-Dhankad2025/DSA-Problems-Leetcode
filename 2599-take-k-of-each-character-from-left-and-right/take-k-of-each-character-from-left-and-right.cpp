@@ -5,9 +5,8 @@ public:
         return true; 
     }
     int takeCharacters(string s, int k){
-        vector<int> v(3, 0), temp(3, 0); 
+        vector<int> v(3, 0); 
         for(int i=0; i<s.length(); i++) v[s[i] - 'a']++; 
-        temp = v; 
         int l = s.length()-1, r =0 ;
         int ans = INT_MAX; 
         if(!check(v, k)) return -1;
