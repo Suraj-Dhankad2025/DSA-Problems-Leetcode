@@ -1,29 +1,29 @@
 class Solution {
 public:
-    bool check(vector<int> v, int k){
-        for(int i=0; i<v.size(); i++) if(v[i] < k) return false; 
-        return true; 
+    bool check(vector<int> &v, int &k){
+        for(auto &i: v){
+            if(i<k)return true;
+        }
+        return false;
     }
     int takeCharacters(string s, int k){
-        vector<int> v(3, 0); 
-        for(int i=0; i<s.length(); i++) v[s[i] - 'a']++; 
-        int l = s.length()-1, r =0 ;
-        int ans = INT_MAX; 
-        if(!check(v, k)) return -1;
-        ans = s.length();  
-
-        while (l >= 0){
-            v[s[l] - 'a']--; l--; 
-            if(!check(v, k)){ 
-               char kk = s[l+1]; 
-               while(v[kk - 'a'] < k) {
-                  v[s[s.length() -1 -r] - 'a']++; r++; 
-              }  
-            }
-            int t = 0; 
-            t += l+1; t += r; 
-            if( ans > t) ans = t; 
+        vector<int> v(3,0);
+        for(auto &i: s){
+            v[i-'a']++;
         }
-        return ans;
+        if(check(v,k)){
+            return -1;
+        }
+        int i = 0, j =0,n=s.length(),ans=0;
+        while(i<n){
+            v[s[i]-'a']--;
+            while(check(v,k)){
+                v[s[j]-'a']++;
+                j++;
+            }
+            ans = max(i-j+1,ans);
+            i++;
+        }
+        return s.length()-ans;
     }
 };
