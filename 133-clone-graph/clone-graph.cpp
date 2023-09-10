@@ -20,35 +20,27 @@ public:
 */
 
 class Solution {
-    void dfs(Node* copy,Node* orig,map<int,Node*>&mp){
-        mp[orig->val] =copy;
-        for(auto currnode:orig->neighbors){
-            if(mp[currnode->val]==NULL){
-                Node* naya=new Node(currnode->val);
-                (copy->neighbors).push_back(naya);
-                dfs(naya,currnode,mp);
+public:
+    vector<Node*>vis;
+    void dfs(Node* node, Node* clone){
+        for(auto it:node->neighbors){
+            if(!vis[it->val]){
+                Node* newNode = new Node(it->val);
+                vis[it->val] = newNode;
+                clone->neighbors.push_back(newNode);
+                dfs(it, newNode);
             }
             else{
-                (copy->neighbors).push_back(mp[currnode->val]);
+                clone->neighbors.push_back(vis[it->val]);
             }
         }
     }
-public:
     Node* cloneGraph(Node* node) {
-        if(node==nullptr)return node;
-        map<int,Node*>mp;
-        Node* copy=new Node(node->val);
-        mp[node->val]=copy;
-        for(auto currnode:node->neighbors){
-            if(mp[currnode->val]==NULL){
-                Node* naya=new Node(currnode->val);
-                (copy->neighbors).push_back(naya);
-                dfs(naya,currnode,mp);
-            }
-            else{
-                (copy->neighbors).push_back(mp[currnode->val]);
-            }
-        }
-        return copy;
+        if(node==NULL)return NULL;
+        Node* clone = new Node(node->val);
+        vis.resize(200, NULL);
+        vis[node->val] = clone;
+        dfs(node, clone);
+        return clone;
     }
 };
