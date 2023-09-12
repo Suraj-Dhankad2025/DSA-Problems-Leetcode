@@ -6,7 +6,7 @@ public:
         for(int i=0; i<s.size(); i++){
             m[s[i]]++;
         }
-        set<int>st;
+        unordered_set<int>st;
         for(auto i:m){
             int f=i.second;
             while(st.find(f)!=st.end() && f>0){
