@@ -6,26 +6,18 @@ public:
         for(int i=0; i<s.size(); i++){
             m[s[i]]++;
         }
-        priority_queue<int>pq;
+        set<int>st;
+        // for(auto i:m){
+        //     st.insert(i.second);
+        // }
         for(auto i:m){
-            pq.push(i.second);    
-        }
-        while(!pq.empty()){
-            int f = pq.top();
-            pq.pop();
-            if(pq.empty()){
-                continue;
-            }
-            int f1 = pq.top();
-            pq.pop();
-            if(f1==f){
-                f1--;
+            int f=i.second;
+            while(st.find(f)!=st.end()){
+                f--;
                 ans++;
-                if(f1!=0)pq.push(f1);
-                pq.push(f);
             }
-            else{
-                pq.push(f1);
+            if(f>0){
+                st.insert(f);
             }
         }
         return ans;
