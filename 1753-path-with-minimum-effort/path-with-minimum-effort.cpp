@@ -1,34 +1,31 @@
 class Solution {
 public:
     int minimumEffortPath(vector<vector<int>>& heights) {
-        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>,greater<pair<int, pair<int, int>>>>pq;
-        int n = heights.size();
-        int m = heights[0].size();
-        pq.push({0,{0,0}});
-        vector<vector<int>>v(n,vector<int>(m,1e9));
+       int n = heights.size();
+       int m = heights[0].size();
+       priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<tuple<int, int, int>>>pq;
+
+       vector<vector<int>>v(n, vector<int>(m, INT_MAX));
         v[0][0] = 0;
-        int dr[] = {-1, 0, 1, 0};
-        int dc[] = {0, 1, 0, -1};
+        pq.push({0,0,0});
+        int dr[4] = {1, 0, -1, 0};
+        int dc[4] = {0, 1, 0, -1};
         while(!pq.empty()){
-            int dif = pq.top().first;
-            int row = pq.top().second.first;
-            int col = pq.top().second.second;
+            auto [w, i, j] = pq.top();
             pq.pop();
-            if(row==n-1 && col==m-1){
-                return dif;
-            }
-            for(int i=0; i<4; i++){
-                int nr = row+dr[i];
-                int nc = col+dc[i];
+            if(i==n-1 && j==m-1)return w;
+            for(int k=0; k<4; k++){
+                int nr = i + dr[k];
+                int nc = j + dc[k];
                 if(nr>=0 && nr<n && nc>=0 && nc<m){
-                    int effort = max(abs(heights[nr][nc] - heights[row][col]), dif);
-                    if(effort<v[nr][nc]){
-                        v[nr][nc] = effort;
-                        pq.push({effort,{nr,nc}});
-                    } 
+                    int dif = max(w, abs(heights[i][j]-heights[nr][nc]));
+                    if(v[nr][nc]>dif){
+                        v[nr][nc] = dif;
+                        pq.push({dif, nr, nc});
+                    }
                 }
             }
         }
-        return 0;
+        return v[n-1][m-1];
     }
 };
