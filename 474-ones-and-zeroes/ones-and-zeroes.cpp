@@ -1,35 +1,34 @@
 class Solution {
 public:
-    int find(int i,vector<pair<int, int>>&v, int m, int n, vector<vector<vector<int>>>&dp){
-        if(i>=v.size()){
+    int solve(int ind,vector<string>&temp,int zero,int one ,vector<string>& strs ,vector<vector<vector<int>>>&dp){
+        if(ind>=strs.size())
+        {
+            if(zero>=0&&one>=0)
             return 0;
+            else  return -1e9;
         }
-        if(dp[i][m][n]!=-1)return dp[i][m][n];
-        int take = 0;
-        int z = v[i].first;
-        int o = v[i].second;
-        if(m-z>=0 && n-o>=0){
-            take = 1+find(i+1, v, m-z, n-o,dp);
+        if(one<0||zero<0) return -1e9;
+        if(dp[ind][zero][one]!=-1) return dp[ind][zero][one];
+
+        int o=0,z=0;
+        string a=strs[ind];
+        for(int i=0;i<a.size();i++)
+        {
+            if(a[i]=='0') z++;
+            if(a[i]=='1') o++;
         }
-        int notTake = find(i+1, v, m, n,dp);
-        return dp[i][m][n] = max(take, notTake);
+        
+        temp.push_back(strs[ind]);
+        int take=1+solve(ind+1,temp,zero-z,one-o,strs,dp);
+        temp.pop_back();
+
+        int not_take=solve(ind+1,temp,zero,one,strs,dp);
+
+        return dp[ind][zero][one]=max(take,not_take);
     }
     int findMaxForm(vector<string>& strs, int m, int n) {
-        string s="";
-        vector<pair<int, int>>v;
-        for(int i=0; i<strs.size(); i++){
-            int z=0,o=0;
-            for(auto it:strs[i]){
-                if(it=='1'){
-                    o++;
-                }
-                else{
-                    z++;
-                }
-            }
-            v.push_back({z,o});
-        }
-        vector<vector<vector<int>>>dp(strs.size(), vector<vector<int>>(m+1, vector<int>(n+1, -1)));
-        return find(0,v,m,n,dp);
+        vector<string>temp;
+        vector<vector<vector<int>>>dp(strs.size()+1,vector<vector<int>>(m+1,vector<int>(n+1,-1)));
+        return solve(0,temp,m,n,strs,dp);
     }
 };
