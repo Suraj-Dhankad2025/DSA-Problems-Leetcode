@@ -6,12 +6,12 @@ public:
             m[dict[i]]++;
         }
         string ans="";
-        vector<string>v;
         int i=0;
         string t="";
         while(i<s.length()){
             if(s[i]==' '){
-                v.push_back(t);
+                ans+=t;
+                ans+=" ";
                 t="";
                 i++;
                 continue;
@@ -24,12 +24,7 @@ public:
                 }
             }
         }
-        v.push_back(t);
-        for(auto i:v){
-            ans+=i;
-            ans+=" ";
-        }
-        ans.pop_back();
+        ans+=t;
         return ans;
     }
 };
