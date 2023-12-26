@@ -1,23 +1,4 @@
 class Solution {
-// int cnt=0;
-//     void numroll(int n,int &k,int target){
-//         if(n==0&&target==0){
-//             cnt+=1;
-//             return;
-//         }
-//         if(n<=0){
-//             return ;
-//         }
-//         for(int i=1;i<=min(k,target);i++){
-//             return numroll(n-1,k,target-i);
-//         }
-//     }
-// public:
-//     int numRollsToTarget(int n, int k, int target) {
-//         int sum=0;
-//          numroll(n,k,target);
-//          return cnt;
-//     }
 public:
 int mod = 1e9+7;
     int solve(int n,int &k,int x,vector<vector<int>> &dp){
