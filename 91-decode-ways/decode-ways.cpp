@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int find(int i, string s, vector<int>&dp){
+    int find(int i,string &s, vector<int>&dp){
         if(i<0){
             return 1;
         }
@@ -11,16 +11,15 @@ public:
         }
         int two = 0;
         if(i-1>=0 && s[i-1]!='0'){
-            int x = (s[i-1]-'0')*10 + (s[i]-'0');
-            cout<<x<<" ";
-            if(x<=26){
-                two = find(i-2,s,dp);
+            int num = (s[i-1]-'0')*10 + (s[i]-'0');
+            if(num<=26){
+                two = find(i-2, s, dp);
             }
         }
-        return dp[i] = one + two;
+        return dp[i] = one+two;
     }
     int numDecodings(string s) {
-        vector<int>dp(s.size(), -1);
-        return find(s.size()-1,s,dp);
+        vector<int>dp(s.size(),-1);
+        return find(s.size()-1,s, dp);
     }
 };
