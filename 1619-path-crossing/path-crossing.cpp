@@ -1,11 +1,10 @@
 class Solution {
 public:
     bool isPathCrossing(string path) {
-        vector<pair<int, int>>v;
-        set<pair<int, int>>s;
+        map<pair<int,int>,int>mp;
         int x=0;
         int y=0;
-        v.push_back({x,y});
+        mp[{x,y}]++;
         for(int i=0;i<path.length();i++){
             if(path[i]=='N'){
                 y++;
@@ -19,12 +18,13 @@ public:
             else{
                 x--;
             }
-            v.push_back({x,y});
+            mp[{x,y}]++;
         }
-        for(auto i:v){
-            s.insert(i);
+        for(auto it:mp){
+            if(it.second>=2){
+                return true;
+            }
         }
-        if(s.size()==v.size())return false;
-        return true;
+        return false;
     }
 };
