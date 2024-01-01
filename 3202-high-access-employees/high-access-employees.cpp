@@ -19,11 +19,10 @@ public:
             m[access_times[i][0]].push_back(stoi(access_times[i][1]));
         }
         for(auto it:m){
-            vector<int>v = it.second;
-            sort(v.begin(), v.end());
+            sort(it.second.begin(), it.second.end());
             int i=0,j=2;
-            while(j<v.size()){
-                if(find(v[i], v[j])==1){
+            while(j<it.second.size()){
+                if(find(it.second[i], it.second[j])==1){
                     ans.push_back(it.first);
                     break;
                 }
