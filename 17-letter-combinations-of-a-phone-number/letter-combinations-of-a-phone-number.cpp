@@ -1,34 +1,30 @@
 class Solution {
 public:
-    void find(int i, string digits, vector<string>&ans,vector<string>&m, string &a){
-        if(i==digits.size()){
-            ans.push_back(a);
+    vector<string>ans;
+    void find(int i,string temp, string s, map<int, string>&m){
+        if(i==s.size()){
+            ans.push_back(temp);
             return ;
         }
-        string str = m[(digits[i]-'0')-2];
-        for(auto it:str){
-            a+=it;
-            find(i+1, digits, ans, m,a);
-            a.pop_back();
+        for(auto it:m[s[i]-'0']){
+            temp.push_back(it);
+            find(i+1, temp, s, m);
+            temp.pop_back();
         }
     }
     vector<string> letterCombinations(string digits) {
-        vector<string>ans;
+        map<int, string>m;
         int n = digits.size();
-        if(n==0){
-            return ans;
-        }
-        string a="";
-        vector<string>m(8);
-        m[0] = "abc";
-        m[1] = "def";
-        m[2] = "ghi";
-        m[3] = "jkl";
-        m[4] = "mno";
-        m[5] = "pqrs";
-        m[6] = "tuv";
-        m[7] = "wxyz";
-        find(0,digits, ans,m,a);
+        if(n==0)return {};
+        m[2] = "abc";
+        m[3] = "def";
+        m[4] = "ghi";
+        m[5] = "jkl";
+        m[6] = "mno";
+        m[7] = "pqrs";
+        m[8] = "tuv";
+        m[9] = "wxyz";
+        find(0, "", digits, m);
         return ans;
     }
 };
