@@ -1,6 +1,6 @@
 class DataStream {
 public:
-    int val;
+      int val;
     int K;
     int cnt;
     DataStream(int value, int k) {
