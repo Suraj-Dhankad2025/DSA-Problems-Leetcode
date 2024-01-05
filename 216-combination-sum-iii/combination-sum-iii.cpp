@@ -1,23 +1,24 @@
 class Solution {
 public:
     vector<vector<int>>ans;
-    void find(int i,vector<int>a, int k, int n){
-        if(i==10){
-            if(n==0 && k==0){
-                ans.push_back(a);
+    void find(int num, vector<int>temp, int sum, int k){
+        if(num==10){
+            if(k==0 && sum==0){
+                ans.push_back(temp);
             }
             return ;
         }
-        find(i+1, a, k,n);
-        if(n>=i){
-            a.push_back(i);
-            find(i+1, a, k-1, n-i);
-            a.pop_back();
+        find(num+1, temp, sum, k);
+        if(sum>=num){
+            temp.push_back(num);
+            find(num+1, temp, sum-num, k-1);
+            temp.pop_back();
         }
+
     }
     vector<vector<int>> combinationSum3(int k, int n) {
-        vector<int>a;
-        find(1,a,k, n);
+        vector<int>temp;
+        find(1, temp, n, k);
         return ans;
     }
 };
