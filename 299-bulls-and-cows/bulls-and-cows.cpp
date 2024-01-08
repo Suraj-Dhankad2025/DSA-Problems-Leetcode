@@ -1,28 +1,26 @@
 class Solution {
 public:
     string getHint(string secret, string guess) {
-        int x=0;
-        int y=0;
         string ans="";
-        int n = secret.size();
-        unordered_map<char, int>m;
-        for(int i=0; i<n; i++){
+        int a=0;
+        int b=0;
+        unordered_map<int, int>m;
+        for(int i=0; i<secret.size(); i++){
             if(secret[i]!=guess[i])
             m[secret[i]]++;
         }
-        for(int i=0; i<n; i++){
+        for(int i=0; i<secret.size(); i++){
             if(secret[i]==guess[i]){
-                x++;
+                a++;
             }
             else if(m.find(guess[i])!=m.end() && m[guess[i]]>0){
-                y++;
                 m[guess[i]]--;
-
+                b++;
             }
         }
-        ans+=to_string(x);
+        ans+=to_string(a);
         ans+="A";
-        ans+=to_string(y);
+        ans+=to_string(b);
         ans+="B";
         return ans;
     }
