@@ -1,39 +1,29 @@
 class Solution {
 public:
-    int minCost(int maxTime, vector<vector<int>>& edges, vector<int>& passingFees) {
-        int n=passingFees.size();
-        vector<pair<int,int>> adj[n];
-
-        for(int i=0;i<edges.size();++i)
-        {
-            adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
-            adj[edges[i][1]].push_back({edges[i][0],edges[i][2]});
+    int minCost(int maxTime, vector<vector<int>>& edges, vector<int>& fees) {
+        int n = fees.size();
+        vector<pair<int, int>>adj[n];
+        for(int i=0; i<edges.size(); i++){
+            adj[edges[i][0]].push_back({edges[i][1], edges[i][2]});
+            adj[edges[i][1]].push_back({edges[i][0], edges[i][2]});
         }
-
-        priority_queue<vector<int>,vector<vector<int>>,greater<>> pq;
-
-        vector<int> dist(n,INT_MAX);
-        dist[0]=0;
-
-        //cost,time,node
-        pq.push({passingFees[0],0,0});
-
-        while(!pq.empty())
-        {
-           vector<int> temp=pq.top();
-           int node=temp[2];
-           int time=temp[1];
-           int c=temp[0];
+        vector<int>totalTime(n, INT_MAX);
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>>pq;
+        
+        totalTime[0] = 0;
+        pq.push({fees[0],{0,0}});
+        while(!pq.empty()){
+            auto [city, time] = pq.top().second;
+            int fee = pq.top().first;
             pq.pop();
-            if(node==n-1)return c;
-
-            for(auto i:adj[node])
-            {
-                auto [new_node,new_time]=i;
-                if(time+new_time>maxTime or dist[new_node]<=time+new_time)continue;
-                dist[new_node]=time+new_time;
-                pq.push({c+passingFees[new_node],time+new_time,new_node});
-            }
+            if(city==n-1)return fee;
+            for(auto [newCity,t]:adj[city]){
+                if (time + t > maxTime || totalTime[newCity]<=time + t) {
+                    continue;
+                }
+                totalTime[newCity] = time + t;
+                pq.push({fee+fees[newCity], {newCity, time + t}});
+            } 
         }
         return -1;
     }
