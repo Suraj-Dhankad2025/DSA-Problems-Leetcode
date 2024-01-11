@@ -1,28 +1,13 @@
 class Solution {
 public:
-    vector<int> maxSubsequence(vector<int>& a, int k) {
-        priority_queue<int, vector<int>, greater<int>>pq;
-        int n = a.size();
-        unordered_map<int, int>m;
-        for(int i=0; i<n; i++){
-            pq.push(a[i]);
-            if(pq.size()>k){
-                m[pq.top()]++;
-                pq.pop();
-            }
-        }
-        vector<int>ans;
-        for(auto i:a){
-            if(m.find(i)!=m.end()){
-                m[i]--;
-                if(m[i]==0){
-                    m.erase(i);
-                }
-            }
-            else{
-                ans.push_back(i);
-            }
-        }
+    vector<int> maxSubsequence(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<pair<int,int>> v(n);
+        vector<int> ans(k);
+        for(int i=0; i<n; ++i) v[i] = {nums[i],i};
+        sort(rbegin(v),rend(v));
+        sort(begin(v),begin(v)+k,[](auto a,auto b){return a.second < b.second;});
+        for(int i=0; i<k; ++i) ans[i] = v[i].first;
         return ans;
     }
 };
