@@ -1,13 +1,7 @@
 class Solution {
 public:
     bool check(int a, int b){
-        if(a<=0.5*b + 7){
-            return false;
-        }
-        if(a>b){
-            return false;
-        }
-        if(a>100 && b<100){
+        if(a<=0.5*b + 7 || a>b || (a>100 && b<100)){
             return false;
         }
         return true;
