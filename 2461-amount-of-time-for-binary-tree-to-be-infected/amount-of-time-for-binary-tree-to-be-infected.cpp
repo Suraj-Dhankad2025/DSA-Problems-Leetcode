@@ -39,10 +39,8 @@ public:
         q1.push(startNode);
         map<TreeNode*, int>vis;
         vis[startNode] = 1;
-        bool f=0;
         while(!q1.empty()){
             int s = q1.size();
-            f=0;
             time++;
             while(s--){
                 TreeNode* node = q1.front();
@@ -50,20 +48,18 @@ public:
                 if(node->left && !vis[node->left]){
                     q1.push(node->left);
                     vis[node->left] = 1;
-                    f=1;
+                    
                 }
                 if(node->right && !vis[node->right]){
                     q1.push(node->right);
                     vis[node->right] = 1;
-                    f=1;
+                   
                 }
                 if(m[node] && !vis[m[node]]){
                     q1.push(m[node]);
                     vis[m[node]] = 1;
-                    f=1;
                 }
             }
-            // if(f==1)time++;
         }
         return time-1;
     }
