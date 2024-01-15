@@ -1,7 +1,7 @@
 class Solution {
 public:
     vector<vector<int>> findWinners(vector<vector<int>>& m) {
-        vector<vector<int>>ans(2);
+         vector<vector<int>>ans(2);
         map<int, int>m1;
         
         int n = m.size();
