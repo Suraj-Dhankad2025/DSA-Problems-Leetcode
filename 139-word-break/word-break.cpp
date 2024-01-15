@@ -1,28 +1,26 @@
 class Solution {
 public:
-     bool badhiya(string s,set<string>&st,int ind,vector<int>&dp){
-        if(ind>=s.length()){
-            return true;
+    bool find(int i, string s, set<string>&st, vector<int>&dp){
+        if(i>=s.size()){
+            return 1;
         }
-        if(dp[ind]!=-1){
-            return dp[ind];
-        }
-        for(int i=ind;i<s.length();i++){
-            if(st.find(s.substr(ind,i-ind+1))!=st.end()){ 
-                if( badhiya(s,st,i+1,dp)){
-                    return dp[ind]=1;
+        if(dp[i]!=-1)return dp[i];
+        for(int j=i; j<s.size(); j++){
+            if(st.find(s.substr(i,j-i+1))!=st.end()){
+                if(find(j+1, s, st, dp)){
+                    dp[i] = 1;
+                    return 1;
                 }
             }
         }
-        return dp[ind]= 0;
+        return dp[i] = 0;
     }
-public:
     bool wordBreak(string s, vector<string>& wordDict) {
         set<string>st;
-        for(int i=0;i<wordDict.size();i++){
+        for(int i=0; i<wordDict.size(); i++){
             st.insert(wordDict[i]);
         }
-        vector<int>dp(s.length(),-1);
-        return badhiya(s,st,0,dp);
+        vector<int>dp(s.size(),-1);
+        return find(0, s, st, dp);
     }
 };
