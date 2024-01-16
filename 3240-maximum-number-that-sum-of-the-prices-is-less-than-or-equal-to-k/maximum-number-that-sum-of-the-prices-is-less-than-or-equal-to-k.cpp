@@ -1,27 +1,27 @@
 #define ll long long
-ll bitSum[100];
+// ll bitSum[100];
 class Solution {
 public:
-    void findBitSum(ll n){
-        if(n==0) return;
-        if(n==1){
-            bitSum[0]++;
-            return;
-        }
-        if(n==2){
-            bitSum[0]++;
-            bitSum[1]++;
-            return;
-        }
+    // void findBitSum(ll n){
+    //     if(n==0) return;
+    //     if(n==1){
+    //         bitSum[0]++;
+    //         return;
+    //     }
+    //     if(n==2){
+    //         bitSum[0]++;
+    //         bitSum[1]++;
+    //         return;
+    //     }
 
-        ll mostSignificantBit = log2(n);
-        ll cn = (1ll<<mostSignificantBit);
-        bitSum[mostSignificantBit] += n-cn+1;
-        for(ll i=0; i<mostSignificantBit; i++){
-            bitSum[i] += cn/2;
-        } 
-        findBitSum(n-cn);
-    }
+    //     ll mostSignificantBit = log2(n);
+    //     ll cn = (1ll<<mostSignificantBit);
+    //     bitSum[mostSignificantBit] += n-cn+1;
+    //     for(ll i=0; i<mostSignificantBit; i++){
+    //         bitSum[i] += cn/2;
+    //     } 
+    //     findBitSum(n-cn);
+    // }
     bool isPricePossible(long long a,long long k,int x){
         long long cost = 0;
         for(int i = 0; i <= 54 ; i++){
