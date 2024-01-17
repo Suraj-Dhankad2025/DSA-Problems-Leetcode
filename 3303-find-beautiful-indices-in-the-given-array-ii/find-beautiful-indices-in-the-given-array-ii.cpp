@@ -1,59 +1,64 @@
 class Solution {
-    vector<int> computePrefixFunction(const string& pattern) {
-    int m = pattern.length();
-    vector<int> prefix(m, 0);
-    int k = 0;
-    for (int q = 1; q < m; ++q) {
-        while (k > 0 && pattern[k] != pattern[q]) {
-            k = prefix[k - 1];
-        }
-        if (pattern[k] == pattern[q]) {
-            k++;
-        }
-        prefix[q] = k;
-    }
-    return prefix;
-}
-vector<int> rollingHashSearch(const string& parent, const string& pattern) {
-    vector<int> occurrences;
-    int n = parent.length();
-    int m = pattern.length();
-    if (m == 0) {
-        for (int i = 0; i < n; ++i) {
-            occurrences.push_back(i);
-        }
-        return occurrences;
-    }
-    vector<int> prefix = computePrefixFunction(pattern);
-    int q = 0;
-    for (int i = 0; i < n; ++i) {
-        while (q > 0 && pattern[q] != parent[i]) {
-            q = prefix[q - 1];
-        }
-        if (pattern[q] == parent[i]) {
-            q++;
-        }
-        if (q == m) {
-            occurrences.push_back(i - m + 1);
-            q = prefix[q - 1];
-        }
-    }
-    return occurrences;
-}
-
-
 public:
-    vector<int> beautifulIndices(string s, string a, string b, int k) {
-        vector<int> as = rollingHashSearch(s, a);
-        vector<int> bs = rollingHashSearch(s, b);
-        vector<int> ans;
-        for (int i = 0; i < as.size(); i++) {
-            auto op1 = lower_bound(bs.begin(), bs.end(), as[i] - k);
-            auto op2 = lower_bound(bs.begin(), bs.end(), as[i]);
-            if ((op1 != bs.end() && *op1 >= as[i] - k && *op1 <= as[i]) || (op2 != bs.end() && *op2 <= as[i] + k && *op2 >= as[i])) {
-                ans.push_back(as[i]);
+    void computeLPS(string pattern, vector<int>& lps){
+        int M = pattern.length();
+        int len = 0;
+        lps[0] = 0;
+        int i = 1;
+        while(i<M){
+            if(pattern[i] == pattern[len]){
+                len++;
+                lps[i] = len;
+                i++;
+            }else {
+                if(len!=0){
+                    len = lps[len-1];
+                }else{
+                    lps[i] = 0;
+                    i++;
+                }
             }
         }
-        return ans;
+    }
+    vector<int> KMP(string pat,string txt){
+        int N = txt.length();
+        int M = pat.length();
+        vector<int> lps(M,0);
+        vector<int> result;
+        computeLPS(pat,lps);
+        int i = 0;
+        int j = 0;
+        while(i<N){
+            if(pat[j] == txt[i]){
+                i++;
+                j++;
+            }
+            if(j == M){
+                result.push_back(i-j);
+                j = lps[j-1];
+            }else if(i < N && pat[j] != txt[i]){
+                if(j != 0){
+                    j = lps[j-1];
+                }else{
+                    i++;
+                }
+            }
+        }
+        return result;
+    }
+    vector<int> beautifulIndices(string s, string a, string b, int k) {
+        int n = s.length();
+        vector<int> i_indices = KMP(a,s);
+        vector<int> j_indices = KMP(b,s);
+        vector<int> result;
+        for(int & i :i_indices){
+            int left_limit = max(0,i-k);
+            int right_limit = min(n-1,i+k);
+            auto it =  lower_bound(begin(j_indices),end(j_indices),left_limit);
+            if(it != j_indices.end() && *it <= right_limit){
+                result.push_back(i);
+            }
+        }
+        return result;
     }
 };
