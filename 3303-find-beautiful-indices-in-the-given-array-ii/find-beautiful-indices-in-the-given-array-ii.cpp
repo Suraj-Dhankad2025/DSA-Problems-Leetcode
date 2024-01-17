@@ -1,31 +1,32 @@
 class Solution {
 public:
-    void computeLPS(string pattern, vector<int>& lps){
-        int M = pattern.length();
-        int len = 0;
-        lps[0] = 0;
-        int i = 1;
-        while(i<M){
-            if(pattern[i] == pattern[len]){
-                len++;
-                lps[i] = len;
-                i++;
-            }else {
-                if(len!=0){
-                    len = lps[len-1];
-                }else{
-                    lps[i] = 0;
-                    i++;
-                }
-            }
-        }
-    }
+    void findlps(string s, vector<int>&lps) {
+	    int pre = 0;
+	    int suf = 1;
+	    lps[0] = 0;
+	    while(suf<s.size()){
+	        if(s[pre]==s[suf]){
+	            lps[suf] = pre + 1;
+	            pre++;
+	            suf++;
+	        }
+	        else{
+	            if(pre==0){
+	                lps[suf] = 0;
+	                suf++;
+	            }
+	            else{
+	                pre = lps[pre - 1];
+	            }
+	        }
+	    }
+	}
     vector<int> KMP(string pat,string txt){
         int N = txt.length();
         int M = pat.length();
         vector<int> lps(M,0);
         vector<int> result;
-        computeLPS(pat,lps);
+        findlps(pat,lps);
         int i = 0;
         int j = 0;
         while(i<N){
@@ -36,7 +37,8 @@ public:
             if(j == M){
                 result.push_back(i-j);
                 j = lps[j-1];
-            }else if(i < N && pat[j] != txt[i]){
+            }
+            else if(i < N && pat[j] != txt[i]){
                 if(j != 0){
                     j = lps[j-1];
                 }else{
@@ -48,17 +50,16 @@ public:
     }
     vector<int> beautifulIndices(string s, string a, string b, int k) {
         int n = s.length();
-        vector<int> i_indices = KMP(a,s);
-        vector<int> j_indices = KMP(b,s);
-        vector<int> result;
-        for(int & i :i_indices){
-            int left_limit = max(0,i-k);
-            int right_limit = min(n-1,i+k);
-            auto it =  lower_bound(begin(j_indices),end(j_indices),left_limit);
-            if(it != j_indices.end() && *it <= right_limit){
-                result.push_back(i);
+        vector<int> v1 = KMP(a,s);
+        vector<int> v2 = KMP(b,s);
+        vector<int> ans;
+         for(auto &i: v1){
+            int x = lower_bound(v2.begin(),v2.end(),i-k)-v2.begin();
+            if(x==v2.size())break;
+            if(abs(v2[x]-i)<=k){
+                ans.push_back(i);
             }
         }
-        return result;
+        return ans;
     }
 };
