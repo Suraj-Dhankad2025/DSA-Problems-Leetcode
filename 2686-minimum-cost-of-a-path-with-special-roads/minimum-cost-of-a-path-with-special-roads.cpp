@@ -1,30 +1,43 @@
 class Solution {
 public:
-    int dp[402][402];
-    int f(vector<vector<int>>&s,int i,int prev,int a1,int b1,int a2,int b2){
-    if(i==s.size()){
-     if(prev==-1){
-         return abs(a2-a1)+abs(b2-b1);
-     }
-        return abs(a2-s[prev][2])+abs(b2-s[prev][3])+s[prev][4];
-     }
-     if(dp[i][prev+1]!=-1){return dp[i][prev+1];}
-    int nt=f(s,i+1,prev,a1,b1,a2,b2);
-    int t=0;
-    if(prev==-1){
-       t=abs(a1-s[i][0])+abs(b1-s[i][1])+f(s,i+1,i,a1,b1,a2,b2); 
+  struct Node {
+    vector<pair<pair<int, int>, int>> neighbors;
+  };
+  unordered_map<int, unordered_map<int, Node>> tree;
+  
+  int getCost(pair<int, int> p1, pair<int, int> p2) {
+    return abs(p1.first - p2.first) + abs(p1.second - p2.second);
+  }
+  
+  int minimumCost(vector<int>& start, vector<int>& target, vector<vector<int>>& specialRoads) {
+    for (auto& vec : specialRoads) {
+      tree[vec[0]][vec[1]].neighbors.push_back({{vec[2], vec[3]}, vec[4]});
     }
-    else{
-          t=abs(s[prev][2]-s[i][0])+abs(s[prev][3]-s[i][1])+s[prev][4]+f(s,i+1,i,a1,b1,a2,b2);
+    pair<int, int> s = {start[0], start[1]};
+    pair<int, int> t = {target[0], target[1]};
+    
+    priority_queue<pair<int, pair<int, int>>> pq;
+    unordered_map<int, unordered_set<int>> visited;
+    pq.push({0, {s.first, s.second}});
+    while (!pq.empty()) {
+      auto info = pq.top(); pq.pop();
+      int cost = -info.first;
+      auto node = info.second;
+      if (visited[node.first].count(node.second)) continue;
+      visited[node.first].insert(node.second);
+      if (node == t) return cost;
+      pq.push({-cost - getCost(node, t), t});
+      // Add special roads as edges.
+      for (auto& vec : specialRoads) {
+        pair<int, int> p = {vec[0], vec[1]};
+        int c = getCost(node, p);
+        pq.push({-c - cost, p});
+      }
+      // Add normal roads to special start points as edges.
+      for (auto& child : tree[node.first][node.second].neighbors) {
+        pq.push({-cost - child.second, {child.first.first, child.first.second}});
+      }
     }
-    return dp[i][prev+1]=min(nt,t);
-    }
-    int minimumCost(vector<int>& s1, vector<int>& t, vector<vector<int>>& s) {
-        vector<vector<int>>v=s;
-    for(int i=0;i<s.size();i++){
-        v.push_back(s[i]);
-    }
-    memset(dp,-1,sizeof(dp));
-    return f(v,0,-1,s1[0],s1[1],t[0],t[1]);
-    }
+    return -1;
+  }
 };
