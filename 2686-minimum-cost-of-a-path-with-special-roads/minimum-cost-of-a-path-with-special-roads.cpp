@@ -1,30 +1,30 @@
 class Solution {
 public:
-    int minimumCost(vector<int>& start, vector<int>& target, vector<vector<int>>& specialRoads) {
-        const int INF = 1e9;
-        int n = specialRoads.size();
-        vector<int> d(n, INF);
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    
-        for(int i = 0; i < n; i++){
-            d[i] = abs(start[0] - specialRoads[i][0]) + 
-            abs(start[1] - specialRoads[i][1]) + specialRoads[i][4];
-            pq.push({d[i], i});
-        }
-        int ans = abs(start[0] - target[0]) + abs(start[1] - target[1]);
-        while(pq.size()){
-            auto[d_c, c] = pq.top(); pq.pop();
-            if(d_c != d[c]) continue;
-            ans = min(ans, d_c + abs(target[0] - specialRoads[c][2]) + abs(target[1] - specialRoads[c][3]));
-            for(int nxt = 0; nxt < n; nxt++){
-                int w = abs(specialRoads[c][2] - specialRoads[nxt][0]) + 
-                abs(specialRoads[c][3] - specialRoads[nxt][1]) + specialRoads[nxt][4];
-                if(d_c + w < d[nxt]){
-                    d[nxt] = d_c + w;
-                    pq.push({d[nxt], nxt});
-                }
+    int dp[402][402];
+    int f(vector<vector<int>>&s,int i,int prev,int a1,int b1,int a2,int b2){
+        if(i==s.size()){
+            if(prev==-1){
+                return abs(a2-a1)+abs(b2-b1);
             }
+            return abs(a2-s[prev][2])+abs(b2-s[prev][3])+s[prev][4];
         }
-        return ans;
+        if(dp[i][prev+1]!=-1){return dp[i][prev+1];}
+        int nt=f(s,i+1,prev,a1,b1,a2,b2);
+        int t=0;
+        if(prev==-1){
+            t=abs(a1-s[i][0])+abs(b1-s[i][1])+f(s,i+1,i,a1,b1,a2,b2); 
+        }
+        else{
+            t=abs(s[prev][2]-s[i][0])+abs(s[prev][3]-s[i][1])+s[prev][4]+f(s,i+1,i,a1,b1,a2,b2);
+        }
+        return dp[i][prev+1]=min(nt,t);
+    }
+    int minimumCost(vector<int>& s1, vector<int>& t, vector<vector<int>>& s) {
+        vector<vector<int>>v=s;
+        for(int i=0;i<s.size();i++){
+            v.push_back(s[i]);
+        }
+        memset(dp,-1,sizeof(dp));
+        return f(v,0,-1,s1[0],s1[1],t[0],t[1]);
     }
 };
