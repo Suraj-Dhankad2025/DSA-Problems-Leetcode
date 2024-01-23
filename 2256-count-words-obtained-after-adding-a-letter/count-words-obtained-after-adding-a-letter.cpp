@@ -1,18 +1,18 @@
 class Solution {
 public:
     int wordCount(vector<string>& startWords, vector<string>& targetWords) {
-        unordered_set<string> s;
-        for(auto it:startWords){
-            sort(it.begin(), it.end());
-            s.insert(it);
+        unordered_set<string>s;
+        for(auto i:startWords){
+            string temp = i;
+            sort(temp.begin(), temp.end());
+            s.insert(temp);
         }
-        int ans = 0;
-        for(auto it:targetWords){
-            string st = it;
-            sort(st.begin(), st.end());
-            for(int i = 0; i < st.size(); i++){
-                string search = st.substr(0, i) + st.substr(i+1);                    
-                if(s.find(search) != s.end()){
+        int ans=0;
+        for(auto i:targetWords){
+            string temp = i;
+            sort(temp.begin(), temp.end());
+            for(int ind=0; ind<temp.size(); ind++){
+                if(s.find(temp.substr(0,ind) + temp.substr(ind+1))!=s.end()){
                     ans++;
                     break;
                 }
