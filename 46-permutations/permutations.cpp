@@ -1,25 +1,22 @@
 class Solution {
 public:
     vector<vector<int>>ans;
-    void find(unordered_map<int,int>&vis, vector<int>&a, vector<int>&nums){
-        if(a.size()==nums.size()){
-            ans.push_back(a);
-            return;
+    void find(int i, vector<int>&nums){
+        if(i>=nums.size()){
+            ans.push_back(nums);
+            return ;
         }
-        for(int i=0;i<nums.size();i++){
-            if(!vis[i]){
-                a.push_back(nums[i]);
-                vis[i]=1;
-                find(vis,a,nums);
-                vis[i]=0;
-                a.pop_back();
-            }
+        for(int j=i; j<nums.size(); j++){
+            swap(nums[i], nums[j]);
+            find(i+1, nums);
+            swap(nums[i], nums[j]);
+
         }
+
     }
     vector<vector<int>> permute(vector<int>& nums) {
-        vector<int>a;
-        unordered_map<int,int>vis;
-        find(vis,a, nums);
+        // vector<int>a;
+        find(0, nums);
         return ans;
     }
 };
