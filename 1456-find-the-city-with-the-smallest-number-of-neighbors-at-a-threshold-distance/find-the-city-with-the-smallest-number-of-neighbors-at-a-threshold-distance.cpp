@@ -1,50 +1,41 @@
 class Solution {
 public:
-    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
-        vector<pair<int,int>> adj[n];
-        for(auto it:edges)
-        {
-            adj[it[0]].push_back({it[1],it[2]});
-            adj[it[1]].push_back({it[0],it[2]});
-        }
-        
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
-        
-        int cityno,mincitycount=1e9;
-        
-        for(int i=0;i<n;i++)
-        {
-            vector<int> dist(n,1e9);
-            pq.push({0,i});
-            dist[i]=0;
-            while(!pq.empty())
-            {
-                int distance=pq.top().first;
-                int node=pq.top().second;
-                pq.pop();
-                for(auto it:adj[node])
-                {
-                    int adjNode=it.first;
-                    int adjWeight=it.second;
-                    if(distance + adjWeight < dist[adjNode])
-                    {
-                        dist[adjNode] = distance + adjWeight;
-                        pq.push({dist[adjNode],adjNode});
-                    }
+    int find(int n,int ind, vector<pair<int, int>>adj[], int td){
+        vector<int>dist(n,1e9);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>q;
+        q.push({0,ind});
+        int ans = 0;
+        dist[ind] = 0;
+        while(!q.empty()){
+            auto [dis, node] = q.top();
+            q.pop();
+            for(auto [newNode, d]:adj[node]){
+                if(d + dis <= dist[newNode]){
+                    dist[newNode] = d + dis;
+                    q.push({d+dis,newNode});
                 }
             }
-            int count=0;
-            for(int j=0;j<n;j++)
-            {
-                if(dist[j]<=distanceThreshold)
-                    count++;
-            }
-            if(count<=mincitycount)
-            {
-                mincitycount=count;
-                cityno = i;
+        }
+        for(auto i:dist){
+            if(i<=td)ans++;
+        }
+        return ans;
+    }
+    int findTheCity(int n, vector<vector<int>>& e, int distanceThreshold) {
+        vector<pair<int, int>>adj[n];
+        for(int i=0; i<e.size(); i++){
+            adj[e[i][0]].push_back({e[i][1], e[i][2]});
+            adj[e[i][1]].push_back({e[i][0], e[i][2]});
+        }
+        int cnt = INT_MAX;
+        int ans=0;
+        for(int i=0; i<n; i++){
+            int c = find(n,i, adj, distanceThreshold);
+            if(c<=cnt){
+                cnt = c;
+                ans=i;
             }
         }
-        return cityno;
+        return ans;
     }
 };
