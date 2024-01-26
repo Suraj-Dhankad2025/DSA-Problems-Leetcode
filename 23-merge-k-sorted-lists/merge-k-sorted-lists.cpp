@@ -8,42 +8,37 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
- class compare{
-    public:
-    bool operator()(ListNode* a,ListNode* b){
-       return (a->val>b->val);
-    }
-};
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        priority_queue<ListNode*, vector<ListNode*>, compare>pq;
-        int k = lists.size();
-        if(k==0){
-            return NULL;
-        }
-        for(int i=0; i<k; i++){
-            if(lists[i]!=NULL){
-                pq.push(lists[i]);
-            }
-        }
-        ListNode* head = NULL;
+        ListNode* newHead = NULL;
         ListNode* tail = NULL;
-        while(pq.size()>0){
-            ListNode* node = pq.top();
+        priority_queue<pair<int, ListNode*>, vector<pair<int, ListNode*>>, greater<pair<int, ListNode*>>>pq;
+        
+        for(auto i:lists){
+            if(i!=NULL)
+            pq.push({i->val,i});
+        }
+        while(!pq.empty()){
+            ListNode* temp = pq.top().second;
             pq.pop();
-            if(node->next!=NULL){
-                pq.push(node->next);
+            ListNode* node = NULL;
+            if(temp!=NULL){
+                node = new ListNode(temp->val);
+                temp = temp->next;
+                if(temp!=NULL)pq.push({temp->val, temp});
             }
-            if(head==NULL){
-                head = node;
+            if(newHead==NULL && node!=NULL){
+                newHead = node;
                 tail = node;
             }
             else{
-                tail->next = node;
-                tail = node;
+                if(node!=NULL){
+                    tail->next = node;
+                    tail = tail->next;
+                }
             }
         }
-        return head;
+        return newHead;
     }
 };
