@@ -1,54 +1,52 @@
 class Solution {
 public:
-    int mod=1e9+7;
     vector<int>prime;
-    int mp[45];
-    long long dp[31][1<<12];
-    int check(int n){
-        for(int i=2;i<=sqrt(n);i++){
+    int v[45];
+    int mod = 1e9+7;
+    bool check(int n){
+        for(int i=2; i*i<=n ;i++){
             if(n%i==0){
                 return false;
             }
         }
         return true;
     }
-    long long find(int value,int mask){
+    long long find(int value, int mask, vector<vector<int>>&dp){
         if(value>30){
             return (mask>0);
         }
         if(dp[value][mask]!=-1){
-            return dp[value][mask]%mod;
+            return dp[value][mask];
         }
-        int new_mask=0;
+        int newMask=0;
         long long product=1;
-        for(int i=0;i<prime.size();i++){
-            if((value%prime[i])==0){
-                product*=prime[i];
-                new_mask|=(1<<i);
+        for(int i=0; i<prime.size(); i++){
+            if(value%prime[i]==0){
+                newMask = newMask | (1<<i);
+                product = product*prime[i];
             }
         }
-        long long ans=find(value+1,mask);
-        if(product==value&&mp[value]&&((mask&new_mask)==0)){
-            ans+=(find(value+1,mask|new_mask)*mp[value]);
+        long long ans = find(value+1, mask, dp);
+        if(product==value && v[value] && (mask & newMask)==0){
+            ans = ans + find(value+1,mask|newMask, dp)*v[value];
         }
-        return dp[value][mask]=ans%mod;
+        return dp[value][mask] = ans%mod;
     }
-    int numberOfGoodSubsets(vector<int>& nums){
-        memset(dp,-1,sizeof(dp));
-        for(int i=2;i<=30;i++){
+    int numberOfGoodSubsets(vector<int>& nums) {
+        for(auto i:nums){
+            v[i]++;
+        }
+        for(int i=2; i<31; i++){
             if(check(i)){
                 prime.push_back(i);
             }
         }
-        for(auto it:nums){
-            mp[it]++;
+        int mask = 0;
+        vector<vector<int>>dp(31, vector<int>(1<<12,-1));
+        long long ans = find(2, mask,dp)%mod;
+        for(int i=0; i<v[1]; i++){
+            ans = (ans*2)%mod;
         }
-        long long val=find(2,0)%mod;
-        long one=1;
-        for(int i=0;i<mp[1];i++){
-            one=(one*2)%mod;
-        }
-        val=(val*one)%mod;
-        return val;
+        return ans%mod;
     }
 };
