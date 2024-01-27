@@ -1,32 +1,28 @@
 class Solution {
 public:
     int stoneGameVI(vector<int>& a, vector<int>& b) {
+        int n = a.size();
         priority_queue<pair<int, int>>pq;
-        for(int i=0; i<a.size(); i++){
+        for(int i=0;i<a.size(); i++){
             pq.push({a[i]+b[i], i});
         }
+        int alice=0;
+        int bob = 0;
         bool f=0;
-        int alice=0,bob=0;
         while(!pq.empty()){
-            int x = pq.top().second;
+            int ind = pq.top().second;
             pq.pop();
             if(f==0){
+                alice+=a[ind];
                 f=1;
-                alice+=a[x];
             }
             else{
+                bob+=b[ind];
                 f=0;
-                bob+=b[x];
             }
         }
-        if(alice>bob){
-            return 1;
-        }
-        else if(bob>alice){
-            return -1;
-        }
-        else{
-            return 0;
-        }
+        if(alice==bob)return 0;
+        if(alice>bob)return 1;
+        return -1;
     }
 };
