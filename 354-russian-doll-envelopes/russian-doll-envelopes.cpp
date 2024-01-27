@@ -1,24 +1,32 @@
 class Solution {
+	private:
+		int solve(int n,vector<int> &nums){
+			vector<int> ans;
+			ans.push_back(nums[0]);
+			for(int i = 1; i < n; i++){
+				if(nums[i] > ans.back()){
+					ans.push_back(nums[i]);
+				}else{
+					int index = lower_bound(ans.begin(),ans.end(),nums[i]) - ans.begin();
+					ans[index] = nums[i];
+				}
+			}
+			return ans.size();
+		}
 public:
-    static bool cmp(vector<int>a, vector<int>b){
-        if(a[0]==b[0]){
-            return a[1]>b[1];
-        }
-        return a[0]<b[0];
-    }
-    int maxEnvelopes(vector<vector<int>>& e) {
-        sort(e.begin(), e.end(), cmp);
-        vector<int>dp;
-        for(int i=0; i<e.size(); i++){
-            int num = e[i][1];
-            int ind = lower_bound(dp.begin(), dp.end(), num) -  dp.begin();
-            if(ind>=dp.size()){
-                dp.push_back(num);
-            }
-            else{
-                dp[ind] = num;
-            }
-        }
-        return dp.size();
-    }
+	int maxEnvelopes(vector<vector<int>>& envelopes) {
+		int n = envelopes.size();
+		if(n == 0) return 0;
+		sort(envelopes.begin(),envelopes.end(),[](vector<int> &a, vector<int> &b){
+			if(a[0] == b[0]){   
+				return a[1] > b[1];
+			}
+			return a[0] < b[0];
+		});
+		vector<int> nums;
+		for(int i = 0; i < n; i++){
+			nums.push_back(envelopes[i][1]);
+		}
+		return solve(n,nums);
+	}
 };
