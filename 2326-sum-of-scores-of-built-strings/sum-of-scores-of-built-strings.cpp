@@ -1,32 +1,20 @@
 class Solution {
 public:
-    vector<int> find(string &s){
-        int i=0,j=1;
-        vector<int>lps(s.size(), 0);
-        lps[0] = 0;
-        while(j<s.size()){
-            if(s[i]==s[j]){
-                lps[j] = i+1;
-                i++;
-                j++;
-            }
-            else{
-                if(i==0){
-                    lps[j] = 0;
-                    j++;
-                }
-                else{
-                    i = lps[i-1];
-                }
-            }
+    vector<int> z_function(string &s){
+        int n=s.size();
+        vector<int> z(n);
+        for(int i=1,l=0,r=0;i<n;i++){
+            if(i<=r)
+                z[i]=min(r-i+1, z[i-l]);
+            while(i+z[i]<n && s[z[i]]==s[i+z[i]])
+                z[i]++;
+            if(i+z[i]-1>r)
+                l=i, r=i+z[i]-1;
         }
-        return lps;
+	    return z;
     }
-    long long sumScores(string s) {
-        vector<int> cnt;
-        vector<int>lps = find(s);
-        for (int j :  lps)
-            cnt.push_back(j == 0 ? 0 : cnt[j - 1] + 1);   
-        return accumulate(begin(cnt), end(cnt), 0LL) + s.size();
+    long long sumScores(string s){
+        vector<int> z = z_function(s);
+        return max(accumulate(z.begin(), z.end(), 0LL), 0LL) + s.size();
     }
 };
