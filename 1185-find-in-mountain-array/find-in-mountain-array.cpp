@@ -10,51 +10,53 @@
 
 class Solution {
 public:
-    int ans = -1;
-    int find(int target, MountainArray &a, int s, int e, bool increasingOrder) {
-        while (s <= e) {
-            int mid = s + (e - s) / 2;
+    int findInMountainArray(int target, MountainArray &a) {
+        int s = 0;
+        int len = a.length()-1;
+        int e = len;
+        int ans=-1;
+        int peakInd=-1;
+        while(s<=e){
+            int mid = s + (e-s)/2;
             int ele = a.get(mid);
-            if (ele == target) {
-                if (ans == -1) {
-                    ans = mid;
-                }
-                ans = min(ans, mid);
+            int r = a.get(mid+1);
+            if(ele<r){
+                peakInd = s = mid+1;
             }
-
-            if (increasingOrder) {
-                if (ele < target) {
-                    s = mid + 1;
-                } else {
-                    e = mid - 1;
-                }
-            } else {
-                if (ele > target) {
-                    s = mid + 1;
-                } else {
-                    e = mid - 1;
-                }
+            else{
+                e = mid-1;
             }
         }
-        return ans;
-    }
-
-    int findInMountainArray(int target, MountainArray &mountainArr) {
-        int n = mountainArr.length();
-        int s = 0, e = n - 1;
-        while (s < e) {
-            int mid = s + (e - s) / 2;
-            if (mountainArr.get(mid) < mountainArr.get(mid + 1)) {
-                s = mid + 1;
-            } else {
-                e = mid;
+        s=0;
+        e = peakInd;
+        while(s<=e){
+            int mid = s + (e-s)/2;
+            int ele = a.get(mid);
+            if(ele==target){
+                return mid;
+            }
+            if(ele<target){
+                s = mid+1;
+            }
+            else{
+                e = mid-1;
             }
         }
-        ans = find(target, mountainArr, 0, e, true);
-        if (ans != -1) {
-            return ans;
+        s=peakInd+1;
+        e = len;
+        while(s<=e){
+            int mid = s + (e-s)/2;
+            int ele = a.get(mid);
+            if(ele==target){
+                return mid;
+            }
+            if(ele<target){
+                e = mid-1;
+            }
+            else{
+                s = mid+1;
+            }
         }
-        ans = find(target, mountainArr, e + 1, n - 1, false);
         return ans;
     }
 };
