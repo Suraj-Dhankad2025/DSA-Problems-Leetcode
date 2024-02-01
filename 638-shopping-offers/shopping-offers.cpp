@@ -1,39 +1,34 @@
 class Solution {
-private:
-    int ex(int ind, vector<int> ds, vector<int> &price, vector<vector<int>> &offer, vector<int> &need,  map<int,map<vector<int>,int>> &dp){
-        if(ind==offer.size()){
-            int tot=0;
-            for(int i=0; i<need.size(); i++){
-                tot+=(need[i]-ds[i])*price[i];
-            }
-            return tot;
-        }
-        
-        if(dp.find(ind)!=dp.end() && dp[ind].find(ds)!=dp[ind].end()){
-            return dp[ind][ds];
-        }
-
-        int offer_notTake=ex(ind+1,ds,price,offer,need,dp);
-
-        int offer_take=1e9;
-        vector<int> copyDS=ds;
-
-        for(int i=0; i<need.size(); i++){
-            if(copyDS[i]+offer[ind][i]<=need[i]){
-                copyDS[i]+=offer[ind][i];
-            }else{
-                return dp[ind][ds]=min(offer_notTake,offer_take);
-            }
-        }
-        offer_take=offer[ind][price.size()]+ex(ind,copyDS,price,offer,need,dp);
-
-        return dp[ind][ds]=min(offer_notTake,offer_take); 
-    }
-
 public:
-    int shoppingOffers(vector<int>& price, vector<vector<int>>& offer, vector<int>& need) {
-        map<int,map<vector<int>,int>> dp;
-        vector<int> ds(need.size(),0);
-        return ex(0,ds,price,offer,need,dp);
+    map<int,map<vector<int>,int>> dp;
+    int solve(vector<int>& price, vector<vector<int>>& special, vector<int> &needs, int i, vector<int>ds){
+        if(i==special.size()){
+            int res = 0;
+            for(int k=0;k<needs.size();k++){
+                res += (needs[k] - ds[k]) * price[k];
+            }
+            return res;
+        }
+        if(dp.find(i)!=dp.end() && dp[i].find(ds)!=dp[i].end()){
+            return dp[i][ds];
+        }
+        int notTake = solve(price, special, needs, i + 1, ds);
+        vector<int>v = ds;
+
+        for(int j=0;j<needs.size();j++){
+            if(v[j]+special[i][j]<=needs[j]){
+                v[j] = v[j] + special[i][j]; 
+            }
+            else{
+                return dp[i][ds] = notTake;
+            } 
+        }
+        int take = special[i][price.size()] + solve(price, special, needs, i, v);
+        return dp[i][ds] = min(take, notTake);
+    }
+    
+    int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
+        vector<int>ds(needs.size(), 0);
+        return solve(price, special, needs, 0, ds);
     }
 };
