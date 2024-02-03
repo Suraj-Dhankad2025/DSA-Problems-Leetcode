@@ -1,32 +1,21 @@
 class Solution {
 public:
-    int find(int i, int j, vector<int>&nums, vector<vector<int>>&dp){
-        if(i>j){
+    int find(vector<int>&nums, int s, int e, vector<vector<int>>&dp){
+        if(s>e){
             return 0;
         }
-        if(dp[i][j]!=-1)return dp[i][j];
-        int maxi = 0;
-        for(int k=i; k<=j; k++){
-            int cost = nums[i-1]*nums[k]*nums[j+1] + find(i, k-1,nums,dp) + find(k+1, j,nums,dp);
-            maxi = max(maxi, cost);
+        if(dp[s][e]!=-1)return dp[s][e];
+        int ans = INT_MIN;
+        for(int i=s; i<=e; i++){
+            int sum = nums[s-1]*nums[i]*nums[e+1] + find(nums, s, i-1, dp) + find(nums, i+1, e, dp);
+            ans = max(ans, sum);
         }
-        return dp[i][j] = maxi;
+        return dp[s][e] = ans;
     }
     int maxCoins(vector<int>& nums) {
-        int n = nums.size();
-        nums.push_back(1);
         nums.insert(nums.begin(), 1);
-        vector<vector<int>>dp(n+2, vector<int>(n+2,0));
-        for(int i=n; i>=1; i--){
-            for(int j=1; j<=n; j++){
-                if(i>j) continue;
-                //  int maxi = 0;
-                for(int k=i; k<=j; k++){
-                  int cost = nums[i-1]*nums[k]*nums[j+1]+dp[i][k-1]+dp[k+1][j];
-                    dp[i][j] = max(dp[i][j], cost);
-                }
-            }
-        }
-        return dp[1][n];
+        nums.push_back(1);
+        vector<vector<int>>dp(nums.size(), vector<int>(nums.size(), -1));
+        return find(nums, 1, nums.size()-2, dp);
     }
 };
