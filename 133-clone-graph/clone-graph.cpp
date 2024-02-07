@@ -21,26 +21,22 @@ public:
 
 class Solution {
 public:
-    vector<Node*>vis;
-    void dfs(Node* node, Node* clone){
-        for(auto it:node->neighbors){
-            if(!vis[it->val]){
-                Node* newNode = new Node(it->val);
-                vis[it->val] = newNode;
-                clone->neighbors.push_back(newNode);
-                dfs(it, newNode);
+    Node* clone(unordered_map<Node*, Node*>&m, Node* node){
+        Node* newNode = new Node(node->val);
+        m[node] = newNode;
+        for(auto i:node->neighbors){
+            if(m.find(i)==m.end()){
+                newNode->neighbors.push_back(clone(m, i));
             }
             else{
-                clone->neighbors.push_back(vis[it->val]);
+                 newNode->neighbors.push_back(m[i]);
             }
         }
+        return newNode;
     }
     Node* cloneGraph(Node* node) {
         if(node==NULL)return NULL;
-        Node* clone = new Node(node->val);
-        vis.resize(200, NULL);
-        vis[node->val] = clone;
-        dfs(node, clone);
-        return clone;
+        unordered_map<Node*, Node*>m;
+        return clone(m, node);
     }
 };
