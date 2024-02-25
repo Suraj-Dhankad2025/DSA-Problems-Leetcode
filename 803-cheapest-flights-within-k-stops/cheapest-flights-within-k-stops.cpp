@@ -1,30 +1,31 @@
 class Solution {
 public:
-    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+    int findCheapestPrice(int n, vector<vector<int>>& f, int src, int dst, int k) {
         vector<pair<int, int>>adj[n];
-        for(int i=0; i<flights.size(); i++){
-            adj[flights[i][0]].push_back({flights[i][1], flights[i][2]});
+        for(int i=0; i<f.size(); i++){
+            adj[f[i][0]].push_back({f[i][1], f[i][2]});
         }
-        queue<pair<int, pair<int, int>>>q;
-        vector<int>dis(n,1e9);
+        
+        queue<pair<int, pair<int, int>>>pq;
+        pq.push({0, {src, 0}});
+        vector<int>dis(n, INT_MAX);
         dis[src] = 0;
-        q.push({src,{0,0}});
-        while(!q.empty()){
-            int node = q.front().first;
-            int cost = q.front().second.first;
-            int stops = q.front().second.second;
-            q.pop();
-            if(stops>k)continue;
+        
+        while(!pq.empty()){
+            int stops = pq.front().first;
+            auto [node, price] = pq.front().second;
+            pq.pop();
+            if(stops>k) continue;
             for(auto it:adj[node]){
-                int wt = it.second;
-                int adjNode = it.first;
-                if(cost+wt<dis[adjNode] && stops<=k){
-                    dis[adjNode] = wt+cost;
-                    q.push({adjNode,{wt+cost,stops+1}});
+                int newNode = it.first;
+                int newPrice = it.second;
+                if(dis[newNode]>newPrice + price && stops<=k){
+                    dis[newNode] = newPrice + price;
+                    pq.push({stops+1, {newNode, dis[newNode]}});
                 }
             }
         }
-        if(dis[dst]==1e9)return -1;
+        if(dis[dst]==INT_MAX)return -1;
         return dis[dst];
     }
 };
