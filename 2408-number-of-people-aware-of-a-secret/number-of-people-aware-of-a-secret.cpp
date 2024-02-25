@@ -7,17 +7,17 @@ public:
         }
         if(dp[day]!=-1)return dp[day];
         long long ans = 1;
-        for(int i=day+delay; i<=min(day+forget, n); i++){
+        for(int i=day+delay; i<=min(n, forget+day); i++){
             if(i==day+forget){
                 ans--;
                 break;
             }
-            ans+=find(i, n, delay, forget, dp)%mod;
+            ans += find(i, n, delay, forget, dp)%mod;
         }
         return dp[day] = ans%mod;
     }
     int peopleAwareOfSecret(int n, int delay, int forget) {
-        vector<int>dp(n+1,-1);
-        return find(1, n, delay, forget, dp)%mod;
+        vector<int>dp(n, -1);
+        return find(1, n, delay, forget, dp);
     }
 };
