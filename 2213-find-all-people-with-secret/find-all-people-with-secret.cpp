@@ -6,19 +6,21 @@ public:
             adj[i[0]].push_back({i[1], i[2]});
             adj[i[1]].push_back({i[0], i[2]});
         }
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>pq;
-        pq.push({0, 0});
-        pq.push({0, firstPerson});
+        queue<pair<int, int>>q;
+        q.push({0, 0});
+        q.push({0, firstPerson});
+
         vector<int>dis(n, INT_MAX);
         dis[0] = 0;
         dis[firstPerson] = 0;
-        while(!pq.empty()){
-            auto [time, node] = pq.top();
-            pq.pop();
+
+        while(!q.empty()){
+            auto [time, node] = q.front();
+            q.pop();
             for(auto [newNode, newTime]:adj[node]){
                 if(time <= newTime && newTime<dis[newNode]){
                     dis[newNode] = newTime;
-                    pq.push({newTime, newNode});
+                    q.push({newTime, newNode});
                 }
             }
         }
