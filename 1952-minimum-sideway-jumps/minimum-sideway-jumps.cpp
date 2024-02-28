@@ -1,8 +1,7 @@
 class Solution {
 public:
     int find(int lane, int i, vector<int>& obs, vector<vector<int>>&dp){
-        int n = obs.size()-1;
-        if(i == n){
+        if(i == obs.size()-1){
             return 0;
         }
         if(dp[i][lane]!=-1)return dp[i][lane];
