@@ -1,8 +1,8 @@
 class ThroneInheritance {
-public:
     map<string, vector<string>>mp;
     map<string, int>dead;
     string king;
+public:
     ThroneInheritance(string kingName) {
         king = kingName;
     }
