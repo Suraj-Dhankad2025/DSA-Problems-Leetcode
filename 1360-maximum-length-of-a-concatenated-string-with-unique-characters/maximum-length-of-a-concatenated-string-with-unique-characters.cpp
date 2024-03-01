@@ -17,9 +17,6 @@ public:
             }
             return -1e9;
         }
-        // if(dp[i].find(s)!=dp[i].end()){
-        //     return dp[i][s];
-        // }
         if(dp.find(s)!=dp.end()){
             return dp[s];
         }
@@ -28,7 +25,6 @@ public:
         return dp[s] = max(take, notTake);
     }
     int maxLength(vector<string>& arr) {
-        // map<int, map<string, int>>dp;
         unordered_map<string, int>dp;
         return find(0, arr, "", dp);
     }
