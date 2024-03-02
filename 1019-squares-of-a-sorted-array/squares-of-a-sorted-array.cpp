@@ -1,18 +1,19 @@
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
-        vector<int>ans;
-        map<int, int>m;
-        for(auto i:nums){
-            int s = i*i;
-            m[s]++;   
-        }
-        for(auto i:m){
-            while(i.second){
-                ans.push_back(i.first);
-                i.second--;
+        vector<int>res;
+        int l=0,r=nums.size()-1;
+        while(l<=r){
+           int left=nums[l]*nums[l],right=nums[r]*nums[r];
+           if(left>=right){
+               res.push_back(left);
+               l++;
+           }else{
+               res.push_back(right);
+               r--;
             }
         }
-        return ans;
+        reverse(res.begin(),res.end());
+        return res;
     }
 };
