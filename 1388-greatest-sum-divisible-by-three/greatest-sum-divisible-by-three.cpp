@@ -13,7 +13,7 @@ public:
         return dp[i][x] = max(take, notTake);
     }
     int maxSumDivThree(vector<int>& nums) {
-        vector<vector<int>>dp(nums.size(), vector<int>(4, -1));
+        vector<vector<int>>dp(nums.size(), vector<int>(3, -1));
         return find(0, nums, 0, dp);
     }
 };
