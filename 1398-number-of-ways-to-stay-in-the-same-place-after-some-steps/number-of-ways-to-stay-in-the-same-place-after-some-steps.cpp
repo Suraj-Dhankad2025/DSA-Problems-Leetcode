@@ -1,7 +1,7 @@
 class Solution {
 public:
     int mod = 1e9+7;
-    long long find(int i, int steps, int l, vector<vector<long long>>&dp){
+    int find(int i, int steps, int l, vector<vector<long long>>&dp){
         if(i<0 || i>=l || steps<0){
             return 0;
         }
@@ -21,6 +21,6 @@ public:
     int numWays(int steps, int arrLen) {  
         int n=min(steps/2+1, arrLen);
         vector<vector<long long>>dp(n+1, vector<long long>(steps+1, -1));
-        return static_cast<int>(find(0, steps, n, dp));
+        return find(0, steps, n, dp);
     }
 };
