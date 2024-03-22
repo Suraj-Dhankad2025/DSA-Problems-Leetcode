@@ -1,11 +1,9 @@
 class Solution {
 public:
-    // int dp1[102][102] = {-1};
     int cost(int i, int j, string &s){
         if(i>=j){
             return 0;
         }
-        // if(dp1[i][j]!=-1)return dp1[i][j];
         int ans = cost(i+1, j-1, s);
         if(s[i]!=s[j])ans++;
         return ans;
