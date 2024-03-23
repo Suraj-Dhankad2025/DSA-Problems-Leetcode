@@ -10,8 +10,8 @@
  */
 class Solution {
 public:
-    ListNode* reverse(ListNode* head){
-        ListNode* cur=head,*prev=NULL,*nxt=NULL;
+    ListNode* rev(ListNode* head){
+        ListNode* cur=head, *prev=NULL, *nxt = NULL;
         while(cur!=NULL){
             nxt = cur->next;
             cur->next = prev;
@@ -21,42 +21,36 @@ public:
         return prev;
     }
     void reorderList(ListNode* head) {
-        if(head==NULL || head->next==NULL){
-            return ;
+        if (head == nullptr || head->next == nullptr) {
+            return; 
         }
-        ListNode*slow=head;
-        ListNode*fast=head;
-        ListNode*remove=NULL;
+        ListNode* fast=head, *slow=head, *pre=NULL;
         while(fast!=NULL && fast->next!=NULL){
-            fast = fast->next->next;
-            remove = slow;
+            pre = slow;
             slow = slow->next;
+            fast = fast->next->next;
         }
-        remove->next = NULL;
-
-        ListNode* head1 = head;
-        ListNode* head2 = reverse(slow);
-        ListNode* prev = new ListNode(-1);
-        ListNode* newHead = prev;
-        bool f=1;
-        while(head1!=NULL && head2!=NULL){
+        pre->next = NULL;
+        ListNode* temp = head;
+        ListNode* temp1 = rev(slow);
+        ListNode* newHead = new ListNode(0);
+        ListNode* newTail = newHead;
+        bool f=0;
+        while(temp!=NULL){
             if(f==0){
-                prev->next = head2;
-                head2 = head2->next;
                 f=1;
+                newTail->next = temp;
+                temp=temp->next;
             }
             else{
-                prev->next = head1;
-                head1 = head1->next;
                 f=0;
+                newTail->next = temp1;
+                temp1=temp1->next;
             }
-            prev = prev->next;
+            newTail = newTail->next;
         }
-        if(head1==NULL){
-            prev->next = head2;
-        }
-        else{
-            prev->next = head1;
+        if(temp1!=NULL){
+            newTail->next = temp1;
         }
         head = newHead->next;
     }
