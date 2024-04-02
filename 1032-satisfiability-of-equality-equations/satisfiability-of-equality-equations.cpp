@@ -55,7 +55,7 @@ public:
         DisjointSet ds(26);
         for(auto i:e){
             if(i[1]=='='){
-                ds.unionBySize(i[0]-'a', i[3]-'a');
+                ds.unionByRank(i[0]-'a', i[3]-'a');
             }
         }
         for(auto i:e){
