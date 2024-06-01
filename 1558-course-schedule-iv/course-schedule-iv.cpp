@@ -16,11 +16,9 @@ public:
                 q.push(i);
             }
         }
-        vector<int>topo;
         while(!q.empty()){
             int node = q.front();
             q.pop();
-            topo.push_back(node);
             for(auto i:adj[node]){
                 for(int k=0; k<n; k++){
                     if(reachable[k][node])reachable[k][i] = true;
