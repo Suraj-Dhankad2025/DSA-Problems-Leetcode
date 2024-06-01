@@ -4,8 +4,10 @@ public:
         vector<bool>ans(queries.size(), 0);
         vector<int>adj[n];
         vector<int>in(n, 0);
+        vector<vector<bool>> reachable(n, vector<bool>(n, false));
         for(int i=0; i<pre.size(); i++){
             adj[pre[i][0]].push_back(pre[i][1]);
+            reachable[pre[i][0]][pre[i][1]] = true;
             in[pre[i][1]]++;
         }
         queue<int>q;
@@ -20,25 +22,12 @@ public:
             q.pop();
             topo.push_back(node);
             for(auto i:adj[node]){
+                for(int k=0; k<n; k++){
+                    if(reachable[k][node])reachable[k][i] = true;
+                }
                 in[i]--;
                 if(in[i]==0){
                     q.push(i);
-                }
-            }
-        }
-        vector<vector<bool>> reachable(n, vector<bool>(n, false));
-        for (int i = 0; i < n; ++i) {
-            reachable[i][i] = true;
-        }
-        for (const auto& p : pre) {
-            reachable[p[0]][p[1]] = true;
-        }
-        for (int k = 0; k < n; ++k) {
-            for (int i = 0; i < n; ++i) {
-                for (int j = 0; j < n; ++j) {
-                    if (reachable[i][k] && reachable[k][j]) {
-                        reachable[i][j] = true;
-                    }
                 }
             }
         }
