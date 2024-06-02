@@ -9,7 +9,7 @@ public:
 
         for (int node = 0; node < n; ++node) {
             int origMask = (1 << node);
-            q.push({node, {origMask, 1}});
+            q.push({node, {origMask, 0}});
             visited[origMask][node] = true;
         }
 
@@ -23,7 +23,7 @@ public:
             int currLength = curr.second.second;
 
             if (currMask == mask)
-                return currLength - 1;
+                return currLength;
 
             for (int i = 0; i < graph[currNode].size(); ++i) {
                 int neighbor = graph[currNode][i];
