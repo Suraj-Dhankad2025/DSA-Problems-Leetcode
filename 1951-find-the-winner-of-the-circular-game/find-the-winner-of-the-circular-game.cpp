@@ -7,13 +7,15 @@ public:
         }
         while(q.size()>1){
             int c=0;
-            while(c<k-1){
-                int friends = q.front();
+            while(c<k && q.size()>1){
+                int f = q.front();
                 q.pop();
-                q.push(friends);
                 c++;
+                if(c==k){
+                    break;
+                }
+                q.push(f);
             }
-            q.pop();
         }
         return q.front();
     }
