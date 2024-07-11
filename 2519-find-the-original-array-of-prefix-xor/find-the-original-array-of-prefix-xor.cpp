@@ -1,12 +1,13 @@
 class Solution {
 public:
-    vector<int> findArray(vector<int>& pref) {
+    vector<int> findArray(vector<int>& pre) {
         vector<int>ans;
-        int n = pref.size();
-        ans.push_back(pref[0]);
-        for(int i=1; i<n; i++){
-            ans.push_back(pref[i]^pref[i-1]);
+        for(int i=pre.size()-1; i>0; i--){
+            int num = pre[i]^pre[i-1];
+            ans.push_back(num);
         }
+        ans.push_back(pre[0]);
+        reverse(ans.begin(), ans.end());
         return ans;
     }
 };
