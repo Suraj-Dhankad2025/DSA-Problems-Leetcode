@@ -50,8 +50,10 @@ public:
                 if(!aliceEdge && !bobEdge){
                     removedEdges++;
                 }
-                if(aliceEdge) aliceEdges++;
-                if(bobEdge) bobEdges++;
+                else{
+                    if(aliceEdge) aliceEdges++;
+                    if(bobEdge) bobEdges++;
+                }
             }
         }
         for(auto it:edges){
