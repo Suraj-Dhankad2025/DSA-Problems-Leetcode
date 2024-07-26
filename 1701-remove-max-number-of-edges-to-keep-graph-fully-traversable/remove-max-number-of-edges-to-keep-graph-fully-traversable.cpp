@@ -1,6 +1,5 @@
 class DisjointSet{
     private:
-        int n;
         vector<int>size,parent;
     public:
         DisjointSet(int n){
